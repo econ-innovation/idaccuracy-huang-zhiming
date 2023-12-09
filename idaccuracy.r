@@ -4,29 +4,22 @@ library(readr)
 setwd("/Users/hwangtsimin/R/assignment_idaccuracy/Aminer")
 
 # 创建一个空的data frames
-data_list <- list()
+merged_df <- data.frame()
 
 # for循环读取所有csv文件
-for (file in list.files(pattern = "\\.csv$")) {
-  print(file)
-  
-  # Read each CSV file and append to the list
-  file_path <- file.path("/Users/hwangtsimin/R/assignment_idaccuracy/Aminer", file)
-  temp <- read_csv(file_path)
-  data_list[[file]] <- temp
+for (file in list.files()) {
+  data <- read.csv(file,header = TRUE, stringsAsFactors = FALSE, na.strings = "", fill = TRUE)
+  merged_df <- rbind(merged_df, data)
 }
+merged_df <- merged_df[,c("doi", "年份", "期刊", "标题")]
 
-# 合并成一个dataframe
-data <- do.call(rbind, data_list)
-
-# 输出列名
-print(names(data))
-
-# 输出合并后数据框
-print(data)
+# 输出数据框
+print(merged_df)
+summary(merged_df)
 
 #apply家族其他方法
-file_list <- list.files("/Users/hwangtsimin/R/assignment_idaccuracy/Aminer", full.names = TRUE)
-data_list <- lapply(file_list, read.csv)
-data <- do.call(rbind, data_list)
-print(head(data)
+merged_df <- list.files("/Users/hwangtsimin/R/assignment_idaccuracy/Aminer", full.names = TRUE)
+data <- lapply(merged_df, read.csv)
+merged_df <- do.call(rbind, data)
+merged_df <- merged_df[,c("doi", "年份", "期刊", "标题")]
+print(merged_df)
